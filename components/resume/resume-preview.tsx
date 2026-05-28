@@ -17,8 +17,8 @@ type ResumePreviewProps = {
 };
 
 function formatRange(startDate?: string | null, endDate?: string | null, isCurrent?: boolean) {
-  const start = startDate ?? "Start";
-  const end = isCurrent ? "Present" : endDate ?? "End";
+  const start = startDate ?? "Bắt đầu";
+  const end = isCurrent ? "Hiện tại" : endDate ?? "Kết thúc";
   return `${start} - ${end}`;
 }
 
@@ -51,10 +51,10 @@ function ExperienceBlock({ experiences }: { experiences: Database["public"]["Tab
     return (
       <div className="rounded-2xl border border-border/70 p-4">
         <div className="flex items-center justify-between gap-3">
-          <p className="font-medium">Product Engineer</p>
-          <p className="text-xs text-muted-foreground">2023 - Present</p>
+          <p className="font-medium">Kỹ sư sản phẩm</p>
+          <p className="text-xs text-muted-foreground">2023 - Hiện tại</p>
         </div>
-        <p className="text-sm text-muted-foreground">Company Name · Built responsive product experiences and improved conversion flows.</p>
+        <p className="text-sm text-muted-foreground">Tên công ty · Xây dựng trải nghiệm sản phẩm đáp ứng và cải thiện quy trình chuyển đổi.</p>
       </div>
     );
   }
@@ -96,7 +96,7 @@ function EducationBlock({ education }: { education: Database["public"]["Tables"]
       {education.slice(0, 2).map((entry) => (
         <div key={entry.id} className="rounded-2xl border border-border/70 p-4">
           <p className="font-medium">{entry.school_name}</p>
-          <p className="text-sm text-muted-foreground">{[entry.degree, entry.field_of_study].filter(Boolean).join(" · ") || "Education"}</p>
+          <p className="text-sm text-muted-foreground">{[entry.degree, entry.field_of_study].filter(Boolean).join(" · ") || "Học vấn"}</p>
           <p className="text-xs text-muted-foreground">{formatRange(entry.start_date, entry.end_date, entry.is_current)}</p>
         </div>
       ))}
@@ -114,8 +114,8 @@ function ProjectsBlock({ projects }: { projects: Database["public"]["Tables"]["p
       {projects.slice(0, 2).map((project) => (
         <div key={project.id} className="rounded-2xl border border-border/70 p-4">
           <p className="font-medium">{project.name}</p>
-          <p className="text-sm text-muted-foreground">{project.description ?? "Project summary"}</p>
-          {project.tech_stack.length > 0 ? <p className="mt-2 text-xs text-muted-foreground">Tech: {project.tech_stack.join(", ")}</p> : null}
+          <p className="text-sm text-muted-foreground">{project.description ?? "Tóm tắt dự án"}</p>
+          {project.tech_stack.length > 0 ? <p className="mt-2 text-xs text-muted-foreground">Công nghệ: {project.tech_stack.join(", ")}</p> : null}
         </div>
       ))}
     </div>
@@ -147,8 +147,8 @@ function DefaultPreview({
     <div className="space-y-5">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-2xl font-semibold tracking-tight">{name || "Your Name"}</h3>
-          <p className="text-sm text-muted-foreground">{title || "Target role and headline"}</p>
+          <h3 className="text-2xl font-semibold tracking-tight">{name || "Tên của bạn"}</h3>
+          <p className="text-sm text-muted-foreground">{title || "Vị trí mục tiêu và tiêu đề"}</p>
         </div>
         <Badge variant="outline" className="border-transparent print:border print:border-black/10" style={{ backgroundColor: `${accentColor}14`, color: accentColor }}>
           {templateLabel}
@@ -158,27 +158,27 @@ function DefaultPreview({
       <Separator />
 
       <section className="space-y-2">
-        <SectionTitle title="Professional Summary" />
-        <p className="text-sm leading-7 text-muted-foreground">{summary || "Write a concise summary that explains your value, focus, and the type of role you want next."}</p>
+        <SectionTitle title="Tóm tắt chuyên môn" />
+        <p className="text-sm leading-7 text-muted-foreground">{summary || "Viết một tóm tắt ngắn gọn thể hiện giá trị, trọng tâm và loại vai trò bạn muốn tiếp theo."}</p>
       </section>
 
       <section className="space-y-2">
-        <SectionTitle title="Experience" />
+        <SectionTitle title="Kinh nghiệm" />
         <ExperienceBlock experiences={experiences} />
       </section>
 
       <section className="space-y-2">
-        <SectionTitle title="Education" />
+        <SectionTitle title="Học vấn" />
         <EducationBlock education={education} />
       </section>
 
       <section className="space-y-2">
-        <SectionTitle title="Skills" />
+        <SectionTitle title="Kỹ năng" />
         <SkillsRow skills={skills.length > 0 ? skills.slice(0, 8).map((skill) => skill.name) : ["TypeScript", "Next.js", "Supabase", "Tailwind CSS"]} />
       </section>
 
       <section className="space-y-2">
-        <SectionTitle title="Projects" />
+        <SectionTitle title="Dự án" />
         <ProjectsBlock projects={projects} />
       </section>
     </div>
@@ -212,34 +212,34 @@ function MinimalEditorialPreview({
         <Badge variant="outline" className="w-fit border-transparent print:border print:border-black/10" style={{ backgroundColor: `${accentColor}14`, color: accentColor }}>
           {templateLabel}
         </Badge>
-        <h3 className="text-2xl font-semibold tracking-tight">{name || "Your Name"}</h3>
-        <p className="text-base italic text-muted-foreground">{title || "Target role and headline"}</p>
+        <h3 className="text-2xl font-semibold tracking-tight">{name || "Tên của bạn"}</h3>
+        <p className="text-base italic text-muted-foreground">{title || "Vị trí mục tiêu và tiêu đề"}</p>
       </div>
 
       <section className="space-y-2">
-        <SectionTitle title="Professional Summary" />
-        <p className="max-w-[38rem] text-sm leading-8 text-muted-foreground">{summary || "Write a concise summary that explains your value, focus, and the type of role you want next."}</p>
+        <SectionTitle title="Tóm tắt chuyên môn" />
+        <p className="max-w-[38rem] text-sm leading-8 text-muted-foreground">{summary || "Viết một tóm tắt ngắn gọn thể hiện giá trị, trọng tâm và loại vai trò bạn muốn tiếp theo."}</p>
       </section>
 
       <Separator />
 
       <section className="space-y-2">
-        <SectionTitle title="Experience" />
+        <SectionTitle title="Kinh nghiệm" />
         <ExperienceBlock experiences={experiences} />
       </section>
 
       <section className="space-y-2">
-        <SectionTitle title="Education" />
+        <SectionTitle title="Học vấn" />
         <EducationBlock education={education} />
       </section>
 
       <section className="space-y-2">
-        <SectionTitle title="Skills" />
+        <SectionTitle title="Kỹ năng" />
         <SkillsRow skills={skills.length > 0 ? skills.slice(0, 8).map((skill) => skill.name) : ["TypeScript", "Next.js", "Supabase", "Tailwind CSS"]} />
       </section>
 
       <section className="space-y-2">
-        <SectionTitle title="Projects" />
+        <SectionTitle title="Dự án" />
         <ProjectsBlock projects={projects} />
       </section>
     </div>
@@ -271,8 +271,8 @@ function CompactExecutivePreview({
     <div className="space-y-5">
       <div className="flex items-start justify-between gap-4 border-b border-border/70 pb-4">
         <div>
-          <h3 className="text-xl font-semibold tracking-tight">{name || "Your Name"}</h3>
-          <p className="text-sm text-muted-foreground">{title || "Target role and headline"}</p>
+          <h3 className="text-xl font-semibold tracking-tight">{name || "Tên của bạn"}</h3>
+          <p className="text-sm text-muted-foreground">{title || "Vị trí mục tiêu và tiêu đề"}</p>
         </div>
         <Badge variant="outline" className="border-transparent print:border print:border-black/10" style={{ backgroundColor: `${accentColor}14`, color: accentColor }}>
           {templateLabel}
@@ -282,28 +282,28 @@ function CompactExecutivePreview({
       <div className="grid gap-6 md:grid-cols-[1.15fr_0.85fr]">
         <div className="space-y-4">
           <section className="space-y-2">
-            <SectionTitle title="Professional Summary" />
-            <p className="text-sm leading-7 text-muted-foreground">{summary || "Write a concise summary that explains your value, focus, and the type of role you want next."}</p>
+            <SectionTitle title="Tóm tắt chuyên môn" />
+            <p className="text-sm leading-7 text-muted-foreground">{summary || "Viết một tóm tắt ngắn gọn thể hiện giá trị, trọng tâm và loại vai trò bạn muốn tiếp theo."}</p>
           </section>
           <section className="space-y-2">
-            <SectionTitle title="Experience" />
+            <SectionTitle title="Kinh nghiệm" />
             <ExperienceBlock experiences={experiences} />
           </section>
           <section className="space-y-2">
-            <SectionTitle title="Projects" />
+            <SectionTitle title="Dự án" />
             <ProjectsBlock projects={projects} />
           </section>
         </div>
         <div className="space-y-4">
           <section className="space-y-2 rounded-[1.25rem] border border-border/70 bg-background/70 p-4">
-            <SectionTitle title="Education" />
+            <SectionTitle title="Học vấn" />
             <EducationBlock education={education} />
           </section>
           <section className="space-y-2 rounded-[1.25rem] border border-border/70 bg-background/70 p-4">
-            <SectionTitle title="Skills" />
+            <SectionTitle title="Kỹ năng" />
             <SkillsRow skills={skills.length > 0 ? skills.slice(0, 8).map((skill) => skill.name) : ["TypeScript", "Next.js", "Supabase", "Tailwind CSS"]} />
           </section>
-          <div className="text-xs text-muted-foreground">Compact Executive condenses the layout for dense, senior-level CVs.</div>
+          <div className="text-xs text-muted-foreground">Bố cục Compact Executive giúp gọn hơn cho CV cấp cao dày đặc thông tin.</div>
         </div>
       </div>
     </div>

@@ -25,32 +25,32 @@ export default async function EditResumePage({ params }: { params: Promise<{ id:
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-[1.5rem] border border-border/70 bg-background/70 px-5 py-4">
         <div className="space-y-1">
           <Badge variant={resume.is_published ? "default" : "secondary"} className="w-fit">
-            {resume.is_published ? "Published" : "Draft"}
+            {resume.is_published ? "Đã xuất bản" : "Bản nháp"}
           </Badge>
           <p className="text-sm text-muted-foreground">
-            {resume.is_published && resume.slug ? `Public link: /r/${resume.slug}` : "Publish this resume to create a public share link."}
+            {resume.is_published && resume.slug ? `Liên kết công khai: /r/${resume.slug}` : "Xuất bản CV này để tạo liên kết chia sẻ."}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <form action={duplicateResumeAction.bind(null, id)}>
             <Button type="submit" variant="secondary" size="sm">
-              Duplicate
+              Nhân bản
             </Button>
           </form>
           <Button asChild variant="outline" size="sm">
             <Link href={`/api/resumes/${id}/pdf`} target="_blank" rel="noreferrer">
-              Download PDF
+              Tải PDF
             </Link>
           </Button>
           {resume.is_published && resume.slug ? <ResumeCopyLinkButton shareUrl={`${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/r/${resume.slug}`} /> : null}
           <form action={toggleResumePublishAction.bind(null, id, !resume.is_published)}>
             <Button type="submit" variant={resume.is_published ? "outline" : "default"} size="sm">
-              {resume.is_published ? "Unpublish" : "Publish"}
+              {resume.is_published ? "Hủy xuất bản" : "Xuất bản"}
             </Button>
           </form>
           {resume.is_published && resume.slug ? (
             <Button asChild variant="secondary" size="sm">
-              <Link href={`/r/${resume.slug}`}>View public</Link>
+              <Link href={`/r/${resume.slug}`}>Xem công khai</Link>
             </Button>
           ) : null}
         </div>
@@ -71,7 +71,7 @@ export default async function EditResumePage({ params }: { params: Promise<{ id:
       <ResumeEditor
         resumeId={id}
         initialName={resume.title}
-        initialHeadline={resume.target_role ?? "Frontend Engineer"}
+        initialHeadline={resume.target_role ?? "Kỹ sư Frontend"}
         initialSummary={resume.summary ?? ""}
         initialAccentColor={resume.accent_color}
         initialTemplateName={resume.template_name}
@@ -82,7 +82,7 @@ export default async function EditResumePage({ params }: { params: Promise<{ id:
       />
       <form action={deleteResumeAction.bind(null, id)}>
         <button type="submit" className="text-sm font-medium text-destructive hover:underline">
-          Delete this resume
+          Xóa CV này
         </button>
       </form>
     </div>

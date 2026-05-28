@@ -65,7 +65,7 @@ export function ResumeForm({ mode, resumeId, defaultValues }: ResumeFormProps) {
         </Badge>
         <CardTitle>{mode === "create" ? "Tạo CV" : "Cập nhật CV"}</CardTitle>
         <CardDescription>
-          Thiết lập metadata cho thẻ dashboard, lựa chọn template và xem trước trong trình chỉnh sửa.
+          Cập nhật thông tin CV, chọn mẫu và xem trước bản in.
         </CardDescription>
       </CardHeader>
       <CardContent>

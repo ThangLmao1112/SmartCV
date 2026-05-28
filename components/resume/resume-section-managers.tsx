@@ -237,28 +237,28 @@ function ExperienceSection({ resumeId, items }: { resumeId: string; items: Exper
   useSectionRefresh(state.success ? state.message : "");
 
   return (
-    <SectionShell title="Experience" description="Add work history and measurable impact." badge="Experience">
-      <SectionFormCard onReset={() => setForm(emptyExperienceForm())} formAction={formAction} isPending={isPending} submitLabel={form.id ? "Update experience" : "Add experience"}>
+    <SectionShell title="Kinh nghiệm" description="Thêm lịch sử làm việc và tác động đo lường được." badge="Kinh nghiệm">
+      <SectionFormCard onReset={() => setForm(emptyExperienceForm())} formAction={formAction} isPending={isPending} submitLabel={form.id ? "Cập nhật kinh nghiệm" : "Thêm kinh nghiệm"}>
         <input type="hidden" name="resumeId" value={resumeId} />
         <input type="hidden" name="id" value={form.id} />
         <input type="hidden" name="sortOrder" value={form.sortOrder} />
         <div className="grid gap-4 md:grid-cols-2">
-          <Field label="Company name"><Input name="companyName" value={form.companyName} onChange={(event) => setForm((current) => ({ ...current, companyName: event.target.value }))} /></Field>
-          <Field label="Job title"><Input name="jobTitle" value={form.jobTitle} onChange={(event) => setForm((current) => ({ ...current, jobTitle: event.target.value }))} /></Field>
-          <Field label="Employment type"><Input name="employmentType" value={form.employmentType} onChange={(event) => setForm((current) => ({ ...current, employmentType: event.target.value }))} /></Field>
-          <Field label="Location"><Input name="location" value={form.location} onChange={(event) => setForm((current) => ({ ...current, location: event.target.value }))} /></Field>
-          <Field label="Start date"><Input name="startDate" type="date" value={form.startDate} onChange={(event) => setForm((current) => ({ ...current, startDate: event.target.value }))} /></Field>
-          <Field label="End date"><Input name="endDate" type="date" value={form.endDate} onChange={(event) => setForm((current) => ({ ...current, endDate: event.target.value }))} /></Field>
+          <Field label="Tên công ty"><Input name="companyName" value={form.companyName} onChange={(event) => setForm((current) => ({ ...current, companyName: event.target.value }))} /></Field>
+          <Field label="Chức danh"><Input name="jobTitle" value={form.jobTitle} onChange={(event) => setForm((current) => ({ ...current, jobTitle: event.target.value }))} /></Field>
+          <Field label="Loại hình công việc"><Input name="employmentType" value={form.employmentType} onChange={(event) => setForm((current) => ({ ...current, employmentType: event.target.value }))} /></Field>
+          <Field label="Địa điểm"><Input name="location" value={form.location} onChange={(event) => setForm((current) => ({ ...current, location: event.target.value }))} /></Field>
+          <Field label="Ngày bắt đầu"><Input name="startDate" type="date" value={form.startDate} onChange={(event) => setForm((current) => ({ ...current, startDate: event.target.value }))} /></Field>
+          <Field label="Ngày kết thúc"><Input name="endDate" type="date" value={form.endDate} onChange={(event) => setForm((current) => ({ ...current, endDate: event.target.value }))} /></Field>
         </div>
-        <Field label="Description"><Textarea name="description" value={form.description} onChange={(event) => setForm((current) => ({ ...current, description: event.target.value }))} /></Field>
-        <Field label="Achievements, one per line"><Textarea name="achievementsText" value={form.achievementsText} onChange={(event) => setForm((current) => ({ ...current, achievementsText: event.target.value }))} /></Field>
+        <Field label="Mô tả"><Textarea name="description" value={form.description} onChange={(event) => setForm((current) => ({ ...current, description: event.target.value }))} /></Field>
+        <Field label="Thành tựu, mỗi dòng một mục"><Textarea name="achievementsText" value={form.achievementsText} onChange={(event) => setForm((current) => ({ ...current, achievementsText: event.target.value }))} /></Field>
         <label className="flex items-center gap-3 text-sm text-muted-foreground">
           <input type="checkbox" name="isCurrent" checked={form.isCurrent} onChange={(event) => setForm((current) => ({ ...current, isCurrent: event.target.checked }))} />
-          Currently working here
+          Hiện đang làm việc tại đây
         </label>
         <div className="flex flex-wrap gap-3">
-          <Button type="submit" disabled={isPending}><Plus className="h-4 w-4" />{form.id ? "Update" : "Add"}</Button>
-          <Button type="button" variant="outline" onClick={() => setForm(emptyExperienceForm())}>Clear</Button>
+          <Button type="submit" disabled={isPending}><Plus className="h-4 w-4" />{form.id ? "Cập nhật" : "Thêm"}</Button>
+          <Button type="button" variant="outline" onClick={() => setForm(emptyExperienceForm())}>Xóa</Button>
         </div>
       </SectionFormCard>
 
@@ -292,7 +292,7 @@ function ExperienceSection({ resumeId, items }: { resumeId: string; items: Exper
             </div>
           </div>
         )}
-        emptyText="No experience entries yet."
+        emptyText="Chưa có mục kinh nghiệm nào."
       />
     </SectionShell>
   );
@@ -304,25 +304,25 @@ function SkillSection({ resumeId, items }: { resumeId: string; items: SkillRow[]
   useSectionRefresh(state.success ? state.message : "");
 
   return (
-    <SectionShell title="Skills" description="Capture your strongest technical and soft skills." badge="Skills">
-      <SectionFormCard onReset={() => setForm(emptySkillForm())} formAction={formAction} isPending={isPending} submitLabel={form.id ? "Update skill" : "Add skill"}>
+    <SectionShell title="Kỹ năng" description="Ghi lại những kỹ năng kỹ thuật và mềm mạnh nhất của bạn." badge="Kỹ năng">
+      <SectionFormCard onReset={() => setForm(emptySkillForm())} formAction={formAction} isPending={isPending} submitLabel={form.id ? "Cập nhật kỹ năng" : "Thêm kỹ năng"}>
         <input type="hidden" name="resumeId" value={resumeId} />
         <input type="hidden" name="id" value={form.id} />
         <input type="hidden" name="sortOrder" value={form.sortOrder} />
         <div className="grid gap-4 md:grid-cols-2">
-          <Field label="Skill name"><Input name="name" value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} /></Field>
-          <Field label="Category"><Input name="category" value={form.category} onChange={(event) => setForm((current) => ({ ...current, category: event.target.value }))} /></Field>
-          <Field label="Proficiency 1-5"><Input name="proficiency" type="number" min={1} max={5} value={form.proficiency} onChange={(event) => setForm((current) => ({ ...current, proficiency: Number(event.target.value) }))} /></Field>
+          <Field label="Tên kỹ năng"><Input name="name" value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} /></Field>
+          <Field label="Danh mục"><Input name="category" value={form.category} onChange={(event) => setForm((current) => ({ ...current, category: event.target.value }))} /></Field>
+          <Field label="Mức độ 1-5"><Input name="proficiency" type="number" min={1} max={5} value={form.proficiency} onChange={(event) => setForm((current) => ({ ...current, proficiency: Number(event.target.value) }))} /></Field>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Button type="submit" disabled={isPending}><Plus className="h-4 w-4" />{form.id ? "Update" : "Add"}</Button>
-          <Button type="button" variant="outline" onClick={() => setForm(emptySkillForm())}>Clear</Button>
+          <Button type="submit" disabled={isPending}><Plus className="h-4 w-4" />{form.id ? "Cập nhật" : "Thêm"}</Button>
+          <Button type="button" variant="outline" onClick={() => setForm(emptySkillForm())}>Xóa</Button>
         </div>
       </SectionFormCard>
 
       <div className="flex flex-wrap gap-2">
         {items.length === 0 ? (
-          <EmptyState text="No skills added yet." />
+          <EmptyState text="Chưa thêm kỹ năng nào." />
         ) : (
           items.map((item) => (
             <div key={item.id} className="flex items-center gap-2 rounded-full border border-border/70 bg-background/70 px-3 py-2 text-sm">
@@ -351,23 +351,23 @@ function ProjectSection({ resumeId, items }: { resumeId: string; items: ProjectR
   useSectionRefresh(state.success ? state.message : "");
 
   return (
-    <SectionShell title="Projects" description="Showcase the work that proves your value." badge="Projects">
-      <SectionFormCard onReset={() => setForm(emptyProjectForm())} formAction={formAction} isPending={isPending} submitLabel={form.id ? "Update project" : "Add project"}>
+    <SectionShell title="Dự án" description="Trình bày những công việc chứng minh giá trị của bạn." badge="Dự án">
+      <SectionFormCard onReset={() => setForm(emptyProjectForm())} formAction={formAction} isPending={isPending} submitLabel={form.id ? "Cập nhật dự án" : "Thêm dự án"}>
         <input type="hidden" name="resumeId" value={resumeId} />
         <input type="hidden" name="id" value={form.id} />
         <input type="hidden" name="sortOrder" value={form.sortOrder} />
         <div className="grid gap-4 md:grid-cols-2">
-          <Field label="Project name"><Input name="name" value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} /></Field>
-          <Field label="Website URL"><Input name="url" value={form.url} onChange={(event) => setForm((current) => ({ ...current, url: event.target.value }))} /></Field>
-          <Field label="GitHub URL"><Input name="githubUrl" value={form.githubUrl} onChange={(event) => setForm((current) => ({ ...current, githubUrl: event.target.value }))} /></Field>
-          <Field label="Tech stack, comma separated"><Input name="techStackText" value={form.techStackText} onChange={(event) => setForm((current) => ({ ...current, techStackText: event.target.value }))} /></Field>
-          <Field label="Start date"><Input name="startDate" type="date" value={form.startDate} onChange={(event) => setForm((current) => ({ ...current, startDate: event.target.value }))} /></Field>
-          <Field label="End date"><Input name="endDate" type="date" value={form.endDate} onChange={(event) => setForm((current) => ({ ...current, endDate: event.target.value }))} /></Field>
+          <Field label="Tên dự án"><Input name="name" value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} /></Field>
+          <Field label="URL website"><Input name="url" value={form.url} onChange={(event) => setForm((current) => ({ ...current, url: event.target.value }))} /></Field>
+          <Field label="URL GitHub"><Input name="githubUrl" value={form.githubUrl} onChange={(event) => setForm((current) => ({ ...current, githubUrl: event.target.value }))} /></Field>
+          <Field label="Công nghệ, ngăn cách bằng dấu phẩy"><Input name="techStackText" value={form.techStackText} onChange={(event) => setForm((current) => ({ ...current, techStackText: event.target.value }))} /></Field>
+          <Field label="Ngày bắt đầu"><Input name="startDate" type="date" value={form.startDate} onChange={(event) => setForm((current) => ({ ...current, startDate: event.target.value }))} /></Field>
+          <Field label="Ngày kết thúc"><Input name="endDate" type="date" value={form.endDate} onChange={(event) => setForm((current) => ({ ...current, endDate: event.target.value }))} /></Field>
         </div>
-        <Field label="Description"><Textarea name="description" value={form.description} onChange={(event) => setForm((current) => ({ ...current, description: event.target.value }))} /></Field>
+        <Field label="Mô tả"><Textarea name="description" value={form.description} onChange={(event) => setForm((current) => ({ ...current, description: event.target.value }))} /></Field>
         <div className="flex flex-wrap gap-3">
-          <Button type="submit" disabled={isPending}><Plus className="h-4 w-4" />{form.id ? "Update" : "Add"}</Button>
-          <Button type="button" variant="outline" onClick={() => setForm(emptyProjectForm())}>Clear</Button>
+          <Button type="submit" disabled={isPending}><Plus className="h-4 w-4" />{form.id ? "Cập nhật" : "Thêm"}</Button>
+          <Button type="button" variant="outline" onClick={() => setForm(emptyProjectForm())}>Xóa</Button>
         </div>
       </SectionFormCard>
 
@@ -378,7 +378,7 @@ function ProjectSection({ resumeId, items }: { resumeId: string; items: ProjectR
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="font-medium">{item.name}</p>
-                <p className="text-sm text-muted-foreground">{item.description ?? "No description"}</p>
+                <p className="text-sm text-muted-foreground">{item.description ?? "Chưa có mô tả"}</p>
               </div>
               <div className="flex gap-2">
                 <Button type="button" variant="ghost" size="icon" onClick={() => setForm({
@@ -399,7 +399,7 @@ function ProjectSection({ resumeId, items }: { resumeId: string; items: ProjectR
             </div>
           </div>
         )}
-        emptyText="No project entries yet."
+        emptyText="Chưa có dự án nào."
       />
     </SectionShell>
   );
@@ -436,7 +436,7 @@ function SectionFormCard({
       {children}
       <div className="flex flex-wrap gap-3">
         <Button type="submit" disabled={isPending}><Plus className="h-4 w-4" />{submitLabel}</Button>
-        <Button type="button" variant="outline" onClick={onReset}>Reset</Button>
+        <Button type="button" variant="outline" onClick={onReset}>Đặt lại</Button>
       </div>
     </form>
   );

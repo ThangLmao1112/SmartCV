@@ -1,4 +1,5 @@
-import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+import path from "path";
+import { Document, Font, Page, StyleSheet, Text, View, Image } from "@react-pdf/renderer";
 import type { Database, Json } from "@/lib/supabase/database.types";
 import type { ResumeTemplateVariant } from "@/lib/resume/templates";
 
@@ -8,12 +9,39 @@ type ExperienceRow = Database["public"]["Tables"]["experiences"]["Row"];
 type SkillRow = Database["public"]["Tables"]["skills"]["Row"];
 type ProjectRow = Database["public"]["Tables"]["projects"]["Row"];
 
+const notoSansVietnamese400 = path.join(
+  process.cwd(),
+  "node_modules",
+  "@fontsource",
+  "noto-sans",
+  "files",
+  "noto-sans-vietnamese-400-normal.woff",
+);
+
+const notoSansVietnamese700 = path.join(
+  process.cwd(),
+  "node_modules",
+  "@fontsource",
+  "noto-sans",
+  "files",
+  "noto-sans-vietnamese-700-normal.woff",
+);
+
+Font.register({
+  family: "Noto Sans",
+  fonts: [
+    { src: notoSansVietnamese400, fontWeight: 400 },
+    { src: notoSansVietnamese700, fontWeight: 700 },
+  ],
+});
+
 export type ResumePdfData = {
   resume: ResumeRow;
   education: EducationRow[];
   experiences: ExperienceRow[];
   skills: SkillRow[];
   projects: ProjectRow[];
+  profile?: Database["public"]["Tables"]["profiles"]["Row"] | null;
 };
 
 const styles = StyleSheet.create({
@@ -23,13 +51,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 36,
     fontSize: 10,
     color: "#111827",
-    fontFamily: "Helvetica",
+    fontFamily: "Noto Sans",
   },
   header: {
     marginBottom: 18,
     paddingBottom: 14,
     borderBottomWidth: 1,
     borderBottomColor: "#d1d5db",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   title: {
     fontSize: 24,
@@ -97,6 +128,29 @@ const styles = StyleSheet.create({
   executiveColumn: {
     flex: 1,
   },
+  headerLeft: {
+    flex: 1,
+    marginRight: 12,
+  },
+  avatar: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    overflow: "hidden",
+  },
+  avatarCircle: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    backgroundColor: "#e5e7eb",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  avatarInitials: {
+    fontSize: 22,
+    fontWeight: 700,
+    color: "#111827",
+  },
 });
 
 function formatRange(startDate?: string | null, endDate?: string | null, isCurrent?: boolean) {
@@ -104,6 +158,10 @@ function formatRange(startDate?: string | null, endDate?: string | null, isCurre
   const end = isCurrent ? "Present" : endDate ?? "End";
   return `${start} - ${end}`;
 }
+
+const fallbackSummary = "Viết một tóm tắt ngắn gọn thể hiện giá trị, trọng tâm và loại vai trò bạn muốn tiếp theo.";
+
+const fallbackSkills = ["TypeScript", "Next.js", "Supabase", "Tailwind CSS"];
 
 function toTextArray(value: Json): string[] {
   if (Array.isArray(value)) {
@@ -114,7 +172,18 @@ function toTextArray(value: Json): string[] {
 }
 
 function renderExperience(experiences: ExperienceRow[]) {
-  if (experiences.length === 0) return null;
+  if (experiences.length === 0) {
+    return (
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Experience</Text>
+        <View style={styles.entry}>
+          <Text style={styles.entryTitle}>Kỹ sư sản phẩm</Text>
+          <Text style={styles.muted}>2023 - Present</Text>
+          <Text style={styles.muted}>Xây dựng trải nghiệm sản phẩm đáp ứng và cải thiện quy trình chuyển đổi.</Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.section}>
@@ -142,7 +211,18 @@ function renderExperience(experiences: ExperienceRow[]) {
 }
 
 function renderEducation(education: EducationRow[]) {
-  if (education.length === 0) return null;
+  if (education.length === 0) {
+    return (
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Education</Text>
+        <View style={styles.entry}>
+          <Text style={styles.entryTitle}>Đại học / Cao đẳng</Text>
+          <Text style={styles.muted}>Bằng cấp · Chuyên ngành</Text>
+          <Text style={styles.muted}>Start - End</Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.section}>
@@ -159,15 +239,15 @@ function renderEducation(education: EducationRow[]) {
 }
 
 function renderSkills(skills: SkillRow[]) {
-  if (skills.length === 0) return null;
+  const items = skills.length > 0 ? skills.map((skill) => skill.name) : fallbackSkills;
 
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>Skills</Text>
       <View style={styles.chipRow}>
-        {skills.map((skill) => (
-          <View key={skill.id} style={styles.chip}>
-            <Text style={styles.chipText}>{skill.name}</Text>
+        {items.map((skill) => (
+          <View key={skill} style={styles.chip}>
+            <Text style={styles.chipText}>{skill}</Text>
           </View>
         ))}
       </View>
@@ -176,7 +256,17 @@ function renderSkills(skills: SkillRow[]) {
 }
 
 function renderProjects(projects: ProjectRow[]) {
-  if (projects.length === 0) return null;
+  if (projects.length === 0) {
+    return (
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Projects</Text>
+        <View style={styles.entry}>
+          <Text style={styles.entryTitle}>Sản phẩm mẫu</Text>
+          <Text style={styles.muted}>Tóm tắt dự án</Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.section}>
@@ -193,7 +283,7 @@ function renderProjects(projects: ProjectRow[]) {
   );
 }
 
-export function ResumePdfDocument({ resume, education, experiences, skills, projects }: ResumePdfData) {
+export function ResumePdfDocument({ resume, education, experiences, skills, projects, profile }: ResumePdfData) {
   const accent = resume.accent_color || "#2563eb";
   const templateName = resume.template_name as ResumeTemplateVariant;
   const isExecutive = templateName === "compact-executive";
@@ -203,9 +293,25 @@ export function ResumePdfDocument({ resume, education, experiences, skills, proj
     <Document title={resume.title} author="SmartCV">
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
-          <Text style={styles.title}>{resume.title}</Text>
-          <Text style={[styles.subtitle, { color: accent }]}>{resume.target_role ?? "Target role"}</Text>
-          <Text style={styles.summary}>{resume.summary ?? ""}</Text>
+          <View style={styles.headerLeft}>
+            <Text style={styles.title}>{resume.title}</Text>
+            <Text style={[styles.subtitle, { color: accent }]}>{resume.target_role ?? "Target role"}</Text>
+            <Text style={styles.summary}>{resume.summary?.trim() ? resume.summary : fallbackSummary}</Text>
+          </View>
+
+          {profile?.avatar_url ? (
+            <Image src={profile.avatar_url} style={styles.avatar} alt="Avatar" />
+          ) : (
+            <View style={styles.avatarCircle}>
+              <Text style={styles.avatarInitials}>
+                {(profile?.full_name || resume.title || "U")
+                  .split(" ")
+                  .map((s) => s[0])
+                  .slice(0, 2)
+                  .join("")}
+              </Text>
+            </View>
+          )}
         </View>
 
         {isExecutive ? (

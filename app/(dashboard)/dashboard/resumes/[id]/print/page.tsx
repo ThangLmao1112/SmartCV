@@ -9,7 +9,7 @@ import { getResumeById } from "@/lib/resume/resume.service";
 import { getResumeSectionData } from "@/lib/resume/section.service";
 
 export const metadata: Metadata = {
-  title: "Print resume",
+  title: "In CV",
 };
 
 export default async function ResumePrintPage({ params }: { params: Promise<{ id: string }> }) {
@@ -28,16 +28,16 @@ export default async function ResumePrintPage({ params }: { params: Promise<{ id
         <Button asChild variant="outline">
           <Link href={`/dashboard/resumes/${id}/edit`} className="inline-flex items-center gap-2">
             <ArrowLeft className="h-4 w-4" />
-            Back to editor
+            Quay lại chỉnh sửa
           </Link>
         </Button>
-        <ResumePrintButton />
+        <ResumePrintButton resumeId={id} />
       </div>
 
       <section className="mx-auto mt-6 max-w-4xl print:mt-0">
         <ResumePreview
           name={resume.title}
-          title={resume.target_role ?? "Target role"}
+          title={resume.target_role ?? "Vị trí mục tiêu"}
           summary={resume.summary ?? ""}
           accentColor={resume.accent_color}
           templateName={resume.template_name}
@@ -49,11 +49,11 @@ export default async function ResumePrintPage({ params }: { params: Promise<{ id
 
         <div className="mt-6 grid gap-4 text-sm text-muted-foreground print:hidden md:grid-cols-2">
           <div className="rounded-[1.25rem] border border-border/70 bg-background/70 p-4">
-            <p className="font-medium text-foreground">Education items</p>
+            <p className="font-medium text-foreground">Mục học vấn</p>
             <p>{sections.education.length}</p>
           </div>
           <div className="rounded-[1.25rem] border border-border/70 bg-background/70 p-4">
-            <p className="font-medium text-foreground">Experience items</p>
+            <p className="font-medium text-foreground">Mục kinh nghiệm</p>
             <p>{sections.experiences.length}</p>
           </div>
         </div>

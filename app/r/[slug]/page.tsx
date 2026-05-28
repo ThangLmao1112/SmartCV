@@ -16,12 +16,12 @@ export async function generateMetadata({ params }: PublicResumePageProps): Promi
   const resume = await getPublishedResumeBySlug(slug);
 
   if (!resume) {
-    return { title: "Resume not found" };
+    return { title: "Không tìm thấy CV" };
   }
 
   return {
     title: `${resume.title} | SmartCV`,
-    description: resume.summary ?? "Public resume preview",
+    description: resume.summary ?? "Xem trước CV công khai",
   };
 }
 
@@ -42,12 +42,12 @@ export default async function PublicResumePage({ params }: PublicResumePageProps
           <CardHeader>
             <CardTitle>{resume.title}</CardTitle>
             <CardDescription>
-              Public share link powered by SmartCV. This page is read-only and optimized for quick review.
+              Liên kết chia sẻ công khai được tạo bởi SmartCV. Trang chỉ đọc và tối ưu cho rà soát nhanh.
             </CardDescription>
             <div className="flex flex-wrap gap-2 pt-2">
               <Button asChild variant="outline" size="sm">
                 <Link href={`/api/public/resumes/${slug}/pdf`} target="_blank" rel="noreferrer">
-                  Download PDF
+                  Tải PDF
                 </Link>
               </Button>
             </div>
@@ -55,7 +55,7 @@ export default async function PublicResumePage({ params }: PublicResumePageProps
           <CardContent className="grid gap-4 md:grid-cols-[minmax(0,1fr)_320px] md:items-start">
             <ResumePreview
               name={resume.title}
-              title={resume.target_role ?? "Target role"}
+              title={resume.target_role ?? "Vị trí mục tiêu"}
               summary={resume.summary ?? ""}
               accentColor={resume.accent_color}
               templateName={resume.template_name}
@@ -68,21 +68,21 @@ export default async function PublicResumePage({ params }: PublicResumePageProps
             <div className="space-y-4">
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Sections</CardTitle>
+                  <CardTitle className="text-base">Các mục</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2 text-sm text-muted-foreground">
-                  <p>Education: {sections.education.length}</p>
-                  <p>Experience: {sections.experiences.length}</p>
-                  <p>Skills: {sections.skills.length}</p>
-                  <p>Projects: {sections.projects.length}</p>
+                  <p>Học vấn: {sections.education.length}</p>
+                  <p>Kinh nghiệm: {sections.experiences.length}</p>
+                  <p>Kỹ năng: {sections.skills.length}</p>
+                  <p>Dự án: {sections.projects.length}</p>
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Share status</CardTitle>
+                  <CardTitle className="text-base">Trạng thái chia sẻ</CardTitle>
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground">
-                  This resume is published and available at /r/{slug}.
+                  CV này đã được xuất bản và có sẵn tại /r/{slug}.
                 </CardContent>
               </Card>
             </div>

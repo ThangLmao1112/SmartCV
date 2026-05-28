@@ -16,7 +16,7 @@ export const listResumes = cache(async (): Promise<ResumeRow[]> => {
     throw new Error(error.message);
   }
 
-  return data ?? [];
+  return (data ?? []).map(normalizeResumeRow);
 });
 
 export const getResumeById = cache(async (resumeId: string): Promise<ResumeRow | null> => {
@@ -27,7 +27,7 @@ export const getResumeById = cache(async (resumeId: string): Promise<ResumeRow |
     return null;
   }
 
-  return data;
+  return normalizeResumeRow(data);
 });
 
 export const getPublishedResumeBySlug = cache(async (slug: string): Promise<ResumeRow | null> => {
@@ -43,7 +43,7 @@ export const getPublishedResumeBySlug = cache(async (slug: string): Promise<Resu
     return null;
   }
 
-  return data;
+  return normalizeResumeRow(data);
 });
 
 export function slugifyResumeTitle(title: string): string {
@@ -59,6 +59,21 @@ export function slugifyResumeTitle(title: string): string {
 export function createResumeSlug(title: string, resumeId: string): string {
   const baseSlug = slugifyResumeTitle(title) || "resume";
   return `${baseSlug}-${resumeId.slice(0, 8)}`;
+}
+
+function normalizeResumeRow(row: ResumeRow): ResumeRow {
+  return {
+    ...row,
+    summary: row.summary ?? "",
+    target_role: row.target_role ?? "",
+    accent_color: row.accent_color ?? "#2563eb",
+    font_family: row.font_family ?? "Manrope",
+    template_name: row.template_name ?? "modern-ats",
+  } as ResumeRow;
+}
+
+function isSchemaFallbackError(error: { message: string }) {
+  return /accent_color|template_name|font_family|is_default/i.test(error.message);
 }
 
 export async function createResume(input: {
@@ -80,29 +95,45 @@ export async function createResume(input: {
     throw new Error("You must be signed in to create a resume.");
   }
 
-  const { data, error } = await supabase
-    .from("resumes")
-    .insert({
-      user_id: userData.user.id,
-      profile_id: input.profileId ?? null,
-      title: input.title,
-      slug: input.slug ?? null,
-      summary: input.summary || null,
-      target_role: input.targetRole || null,
-      template_name: input.templateName,
-      accent_color: input.accentColor,
-      font_family: input.fontFamily ?? "Manrope",
-      is_default: input.isDefault,
-      is_published: input.isPublished ?? false,
-    })
-    .select("*")
-    .single();
+  const baseInsert = {
+    user_id: userData.user.id,
+    profile_id: input.profileId ?? null,
+    title: input.title,
+    slug: input.slug ?? null,
+    summary: input.summary || null,
+    target_role: input.targetRole || null,
+    is_default: input.isDefault,
+    is_published: input.isPublished ?? false,
+  };
+
+  const fullInsert = {
+    ...baseInsert,
+    template_name: input.templateName,
+    accent_color: input.accentColor,
+    font_family: input.fontFamily ?? "Manrope",
+  };
+
+  const { data, error } = await supabase.from("resumes").insert(fullInsert).select("*").single();
 
   if (error) {
+    if (isSchemaFallbackError(error)) {
+      const fallbackInsert = {
+        user_id: userData.user.id,
+        title: input.title,
+      };
+      const fallback = await supabase.from("resumes").insert(fallbackInsert).select("*").single();
+
+      if (fallback.error) {
+        throw new Error(fallback.error.message);
+      }
+
+      return normalizeResumeRow(fallback.data);
+    }
+
     throw new Error(error.message);
   }
 
-  return data;
+  return normalizeResumeRow(data);
 }
 
 export async function duplicateResume(resumeId: string) {
@@ -137,25 +168,40 @@ export async function updateResume(resumeId: string, input: {
   isDefault: boolean;
 }) {
   const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("resumes")
-    .update({
-      title: input.title,
-      summary: input.summary || null,
-      target_role: input.targetRole || null,
-      template_name: input.templateName,
-      accent_color: input.accentColor,
-      is_default: input.isDefault,
-    })
-    .eq("id", resumeId)
-    .select("*")
-    .single();
+  const fullUpdate = {
+    title: input.title,
+    summary: input.summary || null,
+    target_role: input.targetRole || null,
+    template_name: input.templateName,
+    accent_color: input.accentColor,
+    is_default: input.isDefault,
+  };
+
+  const { data, error } = await supabase.from("resumes").update(fullUpdate).eq("id", resumeId).select("*").single();
 
   if (error) {
+    if (isSchemaFallbackError(error)) {
+      const fallbackUpdate = {
+        title: input.title,
+      };
+      const fallback = await supabase
+        .from("resumes")
+        .update(fallbackUpdate)
+        .eq("id", resumeId)
+        .select("*")
+        .single();
+
+      if (fallback.error) {
+        throw new Error(fallback.error.message);
+      }
+
+      return normalizeResumeRow(fallback.data);
+    }
+
     throw new Error(error.message);
   }
 
-  return data;
+  return normalizeResumeRow(data);
 }
 
 export async function updateResumePublishState(resumeId: string, input: { isPublished: boolean; slug?: string | null }) {

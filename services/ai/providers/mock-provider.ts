@@ -4,25 +4,25 @@ import { buildPrompt } from "@/services/ai/prompt-builder";
 function buildMockText(request: AIRequest): string {
   switch (request.feature) {
     case "career-objective":
-      return "Aspiring to contribute as a focused product engineer by building user-first interfaces, improving performance, and delivering clean, maintainable systems.";
+      return "Bằng cách tập trung vào trải nghiệm người dùng, tôi mong muốn đóng góp như một kỹ sư sản phẩm/Frontend tận tâm, xây dựng giao diện sạch, hiệu quả và dễ mở rộng.";
     case "professional-summary":
-      return "Product-minded frontend engineer with a strong foundation in TypeScript, modern React architecture, and polished UI delivery across responsive experiences.";
+      return "Kỹ sư Frontend giàu cảm hứng, am hiểu TypeScript, React hiện đại và thiết kế giao diện tinh gọn, tập trung vào hiệu năng, khả năng mở rộng và trải nghiệm người dùng tốt.";
     case "experience-bullets":
       return [
-        "Built responsive product flows that improved usability across desktop and mobile breakpoints.",
-        "Collaborated with design and backend teams to ship scalable interfaces with cleaner component architecture.",
-        "Reduced friction in user journeys by refining interaction patterns and simplifying high-impact screens.",
+        "Xây dựng luồng sản phẩm responsive, cải thiện trải nghiệm trên cả desktop và mobile.",
+        "Hợp tác với đội thiết kế và backend để triển khai giao diện có cấu trúc component rõ ràng và dễ bảo trì.",
+        "Giảm ma sát trong hành trình người dùng bằng cách tinh chỉnh tương tác và tối ưu hóa các màn hình có tác động lớn.",
       ].join("\n");
     case "skill-suggestions":
       return [
         "Frontend: Next.js, React, TypeScript, Tailwind CSS",
         "Backend: Supabase, PostgreSQL, REST APIs",
-        "Workflow: Testing, performance, accessibility, design systems",
+        "Quy trình: Kiểm thử, tối ưu hiệu năng, khả năng truy cập, hệ thống thiết kế",
       ].join("\n");
     case "tailor-cv":
-      return "Tailor the resume by emphasizing the target role, matching keywords from the job description, and repositioning relevant achievements first.";
+      return "Điều chỉnh CV bằng cách nhấn mạnh vị trí mục tiêu, phù hợp với từ khóa của mô tả công việc và đưa thành tích liên quan lên trước.";
     default:
-      return "AI output is not available for this feature yet.";
+      return "Tính năng AI này chưa sẵn sàng.";
   }
 }
 

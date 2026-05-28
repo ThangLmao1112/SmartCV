@@ -14,26 +14,78 @@ export type ResumeSectionData = {
   projects: ProjectRow[];
 };
 
+function isSortOrderError(error: { message: string } | null) {
+  if (!error) return false;
+  return /sort_order|column.*does not exist/i.test(error.message);
+}
+
+async function getEducationData(supabase: any, resumeId: string): Promise<EducationRow[]> {
+  try {
+    let result = await supabase.from("education").select("*").eq("resume_id", resumeId).order("sort_order", { ascending: true });
+    if (isSortOrderError(result.error)) {
+      result = await supabase.from("education").select("*").eq("resume_id", resumeId);
+    }
+    if (result.error) return [];
+    return result.data ?? [];
+  } catch (err) {
+    return [];
+  }
+}
+
+async function getExperiencesData(supabase: any, resumeId: string): Promise<ExperienceRow[]> {
+  try {
+    let result = await supabase.from("experiences").select("*").eq("resume_id", resumeId).order("sort_order", { ascending: true });
+    if (isSortOrderError(result.error)) {
+      result = await supabase.from("experiences").select("*").eq("resume_id", resumeId);
+    }
+    if (result.error) return [];
+    return result.data ?? [];
+  } catch (err) {
+    return [];
+  }
+}
+
+async function getSkillsData(supabase: any, resumeId: string): Promise<SkillRow[]> {
+  try {
+    let result = await supabase.from("skills").select("*").eq("resume_id", resumeId).order("sort_order", { ascending: true });
+    if (isSortOrderError(result.error)) {
+      result = await supabase.from("skills").select("*").eq("resume_id", resumeId);
+    }
+    if (result.error) return [];
+    return result.data ?? [];
+  } catch (err) {
+    return [];
+  }
+}
+
+async function getProjectsData(supabase: any, resumeId: string): Promise<ProjectRow[]> {
+  try {
+    let result = await supabase.from("projects").select("*").eq("resume_id", resumeId).order("sort_order", { ascending: true });
+    if (isSortOrderError(result.error)) {
+      result = await supabase.from("projects").select("*").eq("resume_id", resumeId);
+    }
+    if (result.error) return [];
+    return result.data ?? [];
+  } catch (err) {
+    return [];
+  }
+}
+
 export const getResumeSectionData = cache(async (resumeId: string): Promise<ResumeSectionData> => {
   const supabase = await createSupabaseServerClient();
 
   const [education, experiences, skills, projects] = await Promise.all([
-    supabase.from("education").select("*").eq("resume_id", resumeId).order("sort_order", { ascending: true }),
-    supabase.from("experiences").select("*").eq("resume_id", resumeId).order("sort_order", { ascending: true }),
-    supabase.from("skills").select("*").eq("resume_id", resumeId).order("sort_order", { ascending: true }),
-    supabase.from("projects").select("*").eq("resume_id", resumeId).order("sort_order", { ascending: true }),
+    getEducationData(supabase, resumeId),
+    getExperiencesData(supabase, resumeId),
+    getSkillsData(supabase, resumeId),
+    getProjectsData(supabase, resumeId),
   ]);
 
-  if (education.error) throw new Error(education.error.message);
-  if (experiences.error) throw new Error(experiences.error.message);
-  if (skills.error) throw new Error(skills.error.message);
-  if (projects.error) throw new Error(projects.error.message);
-
   return {
-    education: education.data ?? [],
-    experiences: experiences.data ?? [],
-    skills: skills.data ?? [],
-    projects: projects.data ?? [],
+    education,
+    experiences,
+    skills,
+    projects,
   };
 });
 
@@ -54,7 +106,6 @@ export async function duplicateResumeSections(sourceResumeId: string, destinatio
         end_date: item.end_date,
         is_current: item.is_current,
         location: item.location,
-        description: item.description,
         sort_order: item.sort_order,
       })),
     );
@@ -165,7 +216,6 @@ export async function createEducationEntry(input: {
     end_date: toNullableString(input.endDate),
     is_current: input.isCurrent,
     location: toNullableString(input.location),
-    description: toNullableString(input.description),
     sort_order: input.sortOrder,
   });
 
@@ -194,7 +244,6 @@ export async function updateEducationEntry(input: {
     end_date: toNullableString(input.endDate),
     is_current: input.isCurrent,
     location: toNullableString(input.location),
-    description: toNullableString(input.description),
     sort_order: input.sortOrder,
   }).eq("id", input.id).eq("resume_id", input.resumeId);
 

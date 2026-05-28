@@ -34,8 +34,8 @@ const sectionLabels = ["Thông tin cá nhân", "Học vấn", "Kinh nghiệm", "
 
 export function ResumeEditor({
   resumeId,
-  initialName = "Your Name",
-  initialHeadline = "Frontend Engineer",
+  initialName = "Tên của bạn",
+  initialHeadline = "Kỹ sư Frontend",
   initialSummary = "Kỹ sư tập trung vào giao diện sạch, hệ thống thiết kế có thể mở rộng và trải nghiệm người dùng nhanh.",
   initialAccentColor = "#2563eb",
   initialTemplateName = "modern-ats",
@@ -49,7 +49,7 @@ export function ResumeEditor({
   const [summary, setSummary] = useState(initialSummary);
   const [accentColor, setAccentColor] = useState(initialAccentColor);
   const [templateName, setTemplateName] = useState<ResumeTemplateName>(initialTemplateName as ResumeTemplateName);
-  const [activeSection, setActiveSection] = useState<(typeof sectionLabels)[number]>("Personal Info");
+  const [activeSection, setActiveSection] = useState<(typeof sectionLabels)[number]>("Thông tin cá nhân");
 
   const quickActions = useMemo(
     () => [
@@ -89,7 +89,7 @@ export function ResumeEditor({
                 ))}
               </TabsList>
 
-              <TabsContent value="Personal Info" className="mt-0 space-y-5">
+              <TabsContent value="Thông tin cá nhân" className="mt-0 space-y-5">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                       <Label htmlFor="resume-name">Họ và tên</Label>
@@ -138,7 +138,7 @@ export function ResumeEditor({
                 </div>
               </TabsContent>
 
-              <TabsContent value="Education" className="mt-0 space-y-4">
+              <TabsContent value="Học vấn" className="mt-0 space-y-4">
                 {resumeId ? (
                   <ResumeSectionManagers
                     resumeId={resumeId}
@@ -149,11 +149,11 @@ export function ResumeEditor({
                     section="Education"
                   />
                 ) : (
-                  <SectionPlaceholder title="Save the resume first" description="Section CRUD is available after the resume exists in Supabase." />
+                  <SectionPlaceholder title="Lưu CV trước" description="Các mục CRUD sẽ khả dụng sau khi CV được lưu trong Supabase." />
                 )}
               </TabsContent>
 
-              <TabsContent value="Experience" className="mt-0 space-y-4">
+              <TabsContent value="Kinh nghiệm" className="mt-0 space-y-4">
                 {resumeId ? (
                   <ResumeSectionManagers
                     resumeId={resumeId}
@@ -164,11 +164,11 @@ export function ResumeEditor({
                     section="Experience"
                   />
                 ) : (
-                  <SectionPlaceholder title="Save the resume first" description="Section CRUD is available after the resume exists in Supabase." />
+                  <SectionPlaceholder title="Lưu CV trước" description="Các mục CRUD sẽ khả dụng sau khi CV được lưu trong Supabase." />
                 )}
               </TabsContent>
 
-              <TabsContent value="Skills" className="mt-0 space-y-4">
+              <TabsContent value="Kỹ năng" className="mt-0 space-y-4">
                 {resumeId ? (
                   <ResumeSectionManagers
                     resumeId={resumeId}
@@ -179,11 +179,11 @@ export function ResumeEditor({
                     section="Skills"
                   />
                 ) : (
-                  <SectionPlaceholder title="Save the resume first" description="Section CRUD is available after the resume exists in Supabase." />
+                  <SectionPlaceholder title="Lưu CV trước" description="Các mục CRUD sẽ khả dụng sau khi CV được lưu trong Supabase." />
                 )}
               </TabsContent>
 
-              <TabsContent value="Projects" className="mt-0 space-y-4">
+              <TabsContent value="Dự án" className="mt-0 space-y-4">
                 {resumeId ? (
                   <ResumeSectionManagers
                     resumeId={resumeId}
@@ -194,7 +194,7 @@ export function ResumeEditor({
                     section="Projects"
                   />
                 ) : (
-                  <SectionPlaceholder title="Save the resume first" description="Section CRUD is available after the resume exists in Supabase." />
+                  <SectionPlaceholder title="Lưu CV trước" description="Các mục CRUD sẽ khả dụng sau khi CV được lưu trong Supabase." />
                 )}
               </TabsContent>
             </Tabs>
@@ -240,8 +240,8 @@ function SectionPlaceholder({ title, description }: { title: string; description
       </div>
       <Separator className="my-4" />
       <div className="grid gap-3 sm:grid-cols-2">
-        <div className="rounded-2xl border border-border/70 bg-background/70 p-4 text-sm text-muted-foreground">Empty state placeholder</div>
-        <div className="rounded-2xl border border-border/70 bg-background/70 p-4 text-sm text-muted-foreground">Add item and AI helper buttons will appear here</div>
+        <div className="rounded-2xl border border-border/70 bg-background/70 p-4 text-sm text-muted-foreground">Khu vực trống</div>
+        <div className="rounded-2xl border border-border/70 bg-background/70 p-4 text-sm text-muted-foreground">Nút thêm mục và trợ lý AI sẽ xuất hiện tại đây</div>
       </div>
     </div>
   );

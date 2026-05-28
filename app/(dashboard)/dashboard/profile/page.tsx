@@ -13,15 +13,15 @@ export default async function ProfilePage() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <Badge variant="secondary" className="w-fit">Profile</Badge>
-          <CardTitle>Profile management</CardTitle>
+          <Badge variant="secondary" className="w-fit">Hồ sơ</Badge>
+          <CardTitle>Quản lý hồ sơ</CardTitle>
           <CardDescription>
-            Manage avatar upload, professional headline, and contact details.
+            Quản lý ảnh đại diện, tiêu đề nghề nghiệp và thông tin liên hệ.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
-            Your profile data is isolated per user with Supabase RLS.
+            Dữ liệu hồ sơ của bạn được tách riêng theo người dùng bằng Supabase RLS.
           </p>
         </CardContent>
       </Card>
@@ -42,15 +42,15 @@ export default async function ProfilePage() {
 
       <Card className="border-border/80 shadow-xl shadow-primary/5">
         <CardHeader>
-          <Badge variant="secondary" className="w-fit">Uploaded files</Badge>
-          <CardTitle>Storage records</CardTitle>
+          <Badge variant="secondary" className="w-fit">Tệp đã tải</Badge>
+          <CardTitle>Bản ghi lưu trữ</CardTitle>
           <CardDescription>
-            These records track avatar uploads in Supabase Storage and can be extended for PDFs later.
+            Những bản ghi này theo dõi tệp ảnh đại diện trong Supabase Storage và có thể mở rộng cho PDF sau này.
           </CardDescription>
         </CardHeader>
         <CardContent>
           {uploadedFiles.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No uploaded files yet.</p>
+            <p className="text-sm text-muted-foreground">Chưa có tệp nào được tải lên.</p>
           ) : (
             <div className="space-y-3">
               {uploadedFiles.map((file) => (
@@ -68,11 +68,11 @@ export default async function ProfilePage() {
                       rel="noreferrer"
                       className="inline-flex h-10 items-center justify-center rounded-full border border-border px-4 text-sm font-medium transition-colors hover:bg-secondary"
                     >
-                      Open
+                      Mở
                     </a>
                     <form action={deleteUploadedFileAction.bind(null, file.id)}>
                       <Button type="submit" variant="ghost" className="text-destructive hover:text-destructive">
-                        Delete
+                        Xóa
                       </Button>
                     </form>
                   </div>

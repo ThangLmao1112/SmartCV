@@ -60,16 +60,19 @@ export async function saveProfile(input: {
 
   const { data, error } = await supabase
     .from("profiles")
-    .upsert({
-      user_id: userData.user.id,
-      full_name: input.fullName,
-      headline: input.headline || null,
-      bio: input.bio || null,
-      website: input.website || null,
-      location: input.location || null,
-      phone: input.phone || null,
-      desired_role: input.desiredRole || null,
-    })
+    .upsert(
+      {
+        user_id: userData.user.id,
+        full_name: input.fullName,
+        headline: input.headline || null,
+        bio: input.bio || null,
+        website: input.website || null,
+        location: input.location || null,
+        phone: input.phone || null,
+        desired_role: input.desiredRole || null,
+      },
+      { onConflict: "user_id" }
+    )
     .select("*")
     .single();
 

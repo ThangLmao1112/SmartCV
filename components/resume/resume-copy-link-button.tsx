@@ -18,10 +18,10 @@ export function ResumeCopyLinkButton({ shareUrl }: ResumeCopyLinkButtonProps) {
       try {
         await navigator.clipboard.writeText(shareUrl);
         setCopied(true);
-        toast.success("Public link copied.");
+        toast.success("Đã sao chép liên kết công khai.");
         window.setTimeout(() => setCopied(false), 1800);
       } catch {
-        toast.error("Unable to copy the public link.");
+        toast.error("Không thể sao chép liên kết công khai.");
       }
     });
   };
@@ -29,7 +29,7 @@ export function ResumeCopyLinkButton({ shareUrl }: ResumeCopyLinkButtonProps) {
   return (
     <Button type="button" variant="outline" size="sm" onClick={handleCopy} disabled={isPending}>
       <Copy className="h-4 w-4" />
-      {copied ? "Copied" : "Copy link"}
+      {copied ? "Đã sao chép" : "Sao chép liên kết"}
     </Button>
   );
 }

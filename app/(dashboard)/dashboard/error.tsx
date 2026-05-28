@@ -18,11 +18,11 @@ export default function DashboardError({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Something went wrong</CardTitle>
+        <CardTitle>Đã xảy ra lỗi</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <p className="text-sm text-muted-foreground">The dashboard could not load. Try again or reload the page.</p>
-        <Button onClick={reset}>Retry</Button>
+        <p className="text-sm text-muted-foreground">Bảng điều khiển không thể tải. Hãy thử lại hoặc tải lại trang.</p>
+        <Button onClick={reset}>Thử lại</Button>
       </CardContent>
     </Card>
   );
