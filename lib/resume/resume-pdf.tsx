@@ -300,7 +300,7 @@ export function ResumePdfDocument({ resume, education, experiences, skills, proj
           </View>
 
           {profile?.avatar_url ? (
-            <Image src={profile.avatar_url} style={styles.avatar} alt="Avatar" />
+            <Image src={profile.avatar_url} style={styles.avatar} />
           ) : (
             <View style={styles.avatarCircle}>
               <Text style={styles.avatarInitials}>
