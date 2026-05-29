@@ -20,7 +20,7 @@ export function SiteHeader() {
           </Button>
           <Button asChild>
             <Link href="/sign-up" className="inline-flex items-center gap-2">
-              Bắt đầu
+              Đăng ký
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
