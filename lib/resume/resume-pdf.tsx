@@ -159,6 +159,10 @@ function formatRange(startDate?: string | null, endDate?: string | null, isCurre
   return `${start} - ${end}`;
 }
 
+function toDisplayItems(items: Array<string | null | undefined>) {
+  return items.filter((item): item is string => Boolean(item?.trim()));
+}
+
 const fallbackSummary = "Viết một tóm tắt ngắn gọn thể hiện giá trị, trọng tâm và loại vai trò bạn muốn tiếp theo.";
 
 const fallbackSkills = ["TypeScript", "Next.js", "Supabase", "Tailwind CSS"];
@@ -191,9 +195,8 @@ function renderExperience(experiences: ExperienceRow[]) {
       {experiences.map((entry) => (
         <View key={entry.id} style={styles.entry}>
           <Text style={styles.entryTitle}>{entry.job_title}</Text>
-          <Text style={styles.muted}>
-            {entry.company_name} · {formatRange(entry.start_date, entry.end_date, entry.is_current)}
-          </Text>
+          <Text style={styles.muted}>{toDisplayItems([entry.company_name, entry.employment_type, entry.location]).join(" · ")}</Text>
+          <Text style={styles.muted}>{formatRange(entry.start_date, entry.end_date, entry.is_current)}</Text>
           {entry.description ? <Text style={styles.muted}>{entry.description}</Text> : null}
           {toTextArray(entry.achievements).length > 0 ? (
             <View style={styles.bullets}>
@@ -230,8 +233,9 @@ function renderEducation(education: EducationRow[]) {
       {education.map((entry) => (
         <View key={entry.id} style={styles.entry}>
           <Text style={styles.entryTitle}>{entry.school_name}</Text>
-          <Text style={styles.muted}>{[entry.degree, entry.field_of_study].filter(Boolean).join(" · ") || "Education"}</Text>
+          <Text style={styles.muted}>{toDisplayItems([entry.degree, entry.field_of_study, entry.location]).join(" · ") || "Education"}</Text>
           <Text style={styles.muted}>{formatRange(entry.start_date, entry.end_date, entry.is_current)}</Text>
+          {entry.description ? <Text style={styles.muted}>{entry.description}</Text> : null}
         </View>
       ))}
     </View>
@@ -276,6 +280,8 @@ function renderProjects(projects: ProjectRow[]) {
           <Text style={styles.entryTitle}>{entry.name}</Text>
           <Text style={styles.muted}>{formatRange(entry.start_date, entry.end_date)}</Text>
           {entry.description ? <Text style={styles.muted}>{entry.description}</Text> : null}
+          {entry.url ? <Text style={styles.muted}>Website: {entry.url}</Text> : null}
+          {entry.github_url ? <Text style={styles.muted}>GitHub: {entry.github_url}</Text> : null}
           {entry.tech_stack.length > 0 ? <Text style={styles.muted}>Tech: {entry.tech_stack.join(", ")}</Text> : null}
         </View>
       ))}

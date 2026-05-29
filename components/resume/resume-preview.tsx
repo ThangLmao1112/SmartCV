@@ -22,6 +22,10 @@ function formatRange(startDate?: string | null, endDate?: string | null, isCurre
   return `${start} - ${end}`;
 }
 
+function toDisplayItems(items: Array<string | null | undefined>) {
+  return items.filter((item): item is string => Boolean(item?.trim()));
+}
+
 function toTextArray(value: Json): string[] {
   if (Array.isArray(value)) {
     return value.filter((item): item is string => typeof item === "string");
@@ -67,10 +71,8 @@ function ExperienceBlock({ experiences }: { experiences: Database["public"]["Tab
             <p className="font-medium">{experience.job_title}</p>
             <p className="text-xs text-muted-foreground">{formatRange(experience.start_date, experience.end_date, experience.is_current)}</p>
           </div>
-          <p className="text-sm text-muted-foreground">
-            {experience.company_name}
-            {experience.description ? ` · ${experience.description}` : ""}
-          </p>
+          <p className="text-sm text-muted-foreground">{toDisplayItems([experience.company_name, experience.employment_type, experience.location]).join(" · ")}</p>
+          {experience.description ? <p className="mt-1 text-sm text-muted-foreground">{experience.description}</p> : null}
           {toTextArray(experience.achievements).length > 0 ? (
             <ul className="mt-3 space-y-1 text-xs text-muted-foreground">
               {toTextArray(experience.achievements)
@@ -96,8 +98,9 @@ function EducationBlock({ education }: { education: Database["public"]["Tables"]
       {education.slice(0, 2).map((entry) => (
         <div key={entry.id} className="rounded-2xl border border-border/70 p-4">
           <p className="font-medium">{entry.school_name}</p>
-          <p className="text-sm text-muted-foreground">{[entry.degree, entry.field_of_study].filter(Boolean).join(" · ") || "Học vấn"}</p>
+          <p className="text-sm text-muted-foreground">{toDisplayItems([entry.degree, entry.field_of_study, entry.location]).join(" · ") || "Học vấn"}</p>
           <p className="text-xs text-muted-foreground">{formatRange(entry.start_date, entry.end_date, entry.is_current)}</p>
+          {entry.description ? <p className="mt-1 text-sm text-muted-foreground">{entry.description}</p> : null}
         </div>
       ))}
     </div>
@@ -115,7 +118,19 @@ function ProjectsBlock({ projects }: { projects: Database["public"]["Tables"]["p
         <div key={project.id} className="rounded-2xl border border-border/70 p-4">
           <p className="font-medium">{project.name}</p>
           <p className="text-sm text-muted-foreground">{project.description ?? "Tóm tắt dự án"}</p>
-          {project.tech_stack.length > 0 ? <p className="mt-2 text-xs text-muted-foreground">Công nghệ: {project.tech_stack.join(", ")}</p> : null}
+          <div className="mt-2 space-y-1 text-xs text-muted-foreground">
+            {project.url ? (
+              <a href={project.url} target="_blank" rel="noreferrer" className="block break-all text-primary underline underline-offset-4">
+                Website: {project.url}
+              </a>
+            ) : null}
+            {project.github_url ? (
+              <a href={project.github_url} target="_blank" rel="noreferrer" className="block break-all text-primary underline underline-offset-4">
+                GitHub: {project.github_url}
+              </a>
+            ) : null}
+            {project.tech_stack.length > 0 ? <p>Công nghệ: {project.tech_stack.join(", ")}</p> : null}
+          </div>
         </div>
       ))}
     </div>

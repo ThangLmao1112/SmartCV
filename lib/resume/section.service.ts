@@ -106,6 +106,7 @@ export async function duplicateResumeSections(sourceResumeId: string, destinatio
         end_date: item.end_date,
         is_current: item.is_current,
         location: item.location,
+        description: item.description,
         sort_order: item.sort_order,
       })),
     );
@@ -216,6 +217,7 @@ export async function createEducationEntry(input: {
     end_date: toNullableString(input.endDate),
     is_current: input.isCurrent,
     location: toNullableString(input.location),
+    description: toNullableString(input.description),
     sort_order: input.sortOrder,
   });
 
@@ -244,6 +246,7 @@ export async function updateEducationEntry(input: {
     end_date: toNullableString(input.endDate),
     is_current: input.isCurrent,
     location: toNullableString(input.location),
+    description: toNullableString(input.description),
     sort_order: input.sortOrder,
   }).eq("id", input.id).eq("resume_id", input.resumeId);
 
